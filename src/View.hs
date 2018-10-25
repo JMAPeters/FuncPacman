@@ -18,4 +18,7 @@ viewPure gstate = case infoToShow gstate of
 
 
 viewGrid :: GameState -> Picture
-viewGrid gstate = color white (text (show 0))
+viewGrid gstate = 
+
+-- ga de grid af, check elk vakje, staat er bijv. een w roep de wall teken methode aan met de info waar die in het grid staat
+-- pos - 200 op x en y
