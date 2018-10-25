@@ -8,14 +8,16 @@ import Graphics.Gloss
 import Graphics.Gloss.Interface.IO.Game
 import System.Random
 
+{- Regelt input en verandering in de game -}
+
 -- | Handle one iteration of the game
 step :: Float -> GameState -> IO GameState
 step secs gstate
   | elapsedTime gstate + secs > nO_SECS_BETWEEN_CYCLES
   = -- We show a new random number
-    do randomNumber <- randomIO
-       let newNumber = abs randomNumber `mod` 10
-       return $ GameState (ShowANumber newNumber) 0
+    do 
+       let newGrid = initialGrid
+       return $ GameState ShowNothing newGrid 0
   | otherwise
   = -- Just update the elapsed time
     return $ gstate { elapsedTime = elapsedTime gstate + secs }
