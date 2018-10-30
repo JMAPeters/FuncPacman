@@ -21,7 +21,6 @@ drawGrid grid x y = case grid ! (x,y) of
                     "c" -> makePac x y 
                     " " -> blank
 
-
 makeSquare :: Int -> Int -> Picture
 makeSquare x y = Color blue $ Polygon [pointOne, pointTwo, pointTree, pointFour, pointOne]
   where
