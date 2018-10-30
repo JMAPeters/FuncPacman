@@ -29,10 +29,20 @@ input e gstate = return (inputKey e gstate)
 
 inputKey :: Event -> GameState -> GameState
 inputKey (EventKey (Char c) _ _ _) gstate
-  = -- If the user presses a character key, show that one
-    gstate {grid = array ((0,0),(4,4)) [((0,0),"w"),((0,1),"w"),((0,2),"w"),((0,3),"w"),((0,4),"w"),
-                                        ((1,0),"w"),((1,1),"c"),((1,2),"w"),((1,3),"c"),((1,4),"w"),
-                                        ((2,0),"w"),((2,1),"c"),((2,2),"w"),((2,3),"c"),((2,4),"w"),
-                                        ((3,0),"w"),((3,1),"c"),((3,2),"w"),((3,3),"c"),((3,4),"w"),
-                                        ((4,0),"w"),((4,1),"w"),((4,2),"w"),((4,3),"w"),((4,4),"w")]}
+  = case c of 
+    'w' -> changePos (posx $ pacman gstate) ((posy $ pacman gstate) + 1) gstate
+    's' -> changePos (posx $ pacman gstate) ((posy $ pacman gstate) - 1) gstate
+    'a' -> changePos ((posx $ pacman gstate) - 1) (posy $ pacman gstate) gstate
+    'd' -> changePos ((posx $ pacman gstate) + 1) (posy $ pacman gstate) gstate
+    _ -> gstate
 inputKey _ gstate = gstate -- Otherwise keep the same
+
+changePos :: Int -> Int -> GameState -> GameState
+changePos x y gs
+    | checkPos x y (grid gs) = gs {pacman = Pacman x y}
+    | otherwise = gs
+
+checkPos :: Int -> Int -> Grid -> Bool
+checkPos x y grid = case grid ! (x,y) of
+                    "w" -> False
+                    _ -> True
