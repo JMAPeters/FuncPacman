@@ -13,7 +13,7 @@ view :: GameState -> IO Picture
 view gs = return $ Pictures [makeView $ grid gs, drawPacman (posx $ pacman gs) (posy $ pacman gs)]
 
 makeView :: Grid -> Picture
-makeView grid = Pictures [drawGrid grid y x | x <- [0 .. gridLenght - 1], y <- [0..gridLenght - 1]]
+makeView grid = Pictures [drawGrid grid y x | x <- [0 .. gridLenght - 1], y <- [0..gridWidth - 1]]
 
 drawGrid :: Grid -> Int -> Int -> Picture
 drawGrid grid x y = case grid ! (x,y) of
