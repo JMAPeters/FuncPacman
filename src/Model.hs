@@ -14,17 +14,17 @@ nO_SECS_BETWEEN_CYCLES = 5
 screenSize :: Float
 screenSize = 400
 
-gridLenght :: Float
+gridLenght :: Int
 gridLenght = 5
 
 screenBlok :: Float
-screenBlok = 80
+screenBlok = screenSize / fromIntegral gridLenght
 
 initialState :: GameState
 initialState = GameState startGrid 0
 
 startGrid :: Grid
-startGrid = array ((0,0),(4,4)) [((0,0),"w"),((0,1),"w"),((0,2),"w"),((0,3),"w"),((0,4),"w"),
+startGrid = array ((0,0),(gridLenght,gridLenght)) [((0,0),"w"),((0,1),"w"),((0,2),"w"),((0,3),"w"),((0,4),"w"),
                                  ((1,0),"w"),((1,1),"c"),((1,2),"w"),((1,3),"c"),((1,4),"w"),
                                  ((2,0),"w"),((2,1),"c"),((2,2),"w"),((2,3),"c"),((2,4),"w"),
                                  ((3,0),"w"),((3,1),"c"),((3,2),"w"),((3,3),"c"),((3,4),"w"),

@@ -13,7 +13,7 @@ view :: GameState -> IO Picture
 view = return . makeView . grid
 
 makeView :: Grid -> Picture
-makeView grid = Pictures [drawGrid grid y x | x <- [0 .. 5 - 1], y <- [0..5 - 1]]
+makeView grid = Pictures [drawGrid grid y x | x <- [0 .. gridLenght - 1], y <- [0..gridLenght - 1]]
 
 drawGrid :: Grid -> Int -> Int -> Picture
 drawGrid grid x y = case grid ! (x,y) of
@@ -30,9 +30,9 @@ makeSquare x y = Color blue $ Polygon [pointOne, pointTwo, pointTree, pointFour,
     pointFour = (fromIntegral x * screenBlok - 200.0, fromIntegral y * screenBlok + screenBlok - 200.0)
 
 makePac :: Int -> Int -> Picture
-makePac x y = Color white $ circleSolid 5
+makePac x y = Translate ((fromIntegral x * screenBlok) + (screenBlok / 2) - 200) ((fromIntegral y * screenBlok) + (screenBlok / 2) -200) $ Color white $ circleSolid 5
 
---Translate ((fromIntegral x * screenBlok) + (screenBlok / 2) - 200) ((fromIntegral y * screenBlok) + (screenBlok / 2) -200) 
+ 
 
 
 
