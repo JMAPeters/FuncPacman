@@ -13,7 +13,7 @@ view :: GameState -> IO Picture
 view gs = return $ Pictures [makeView $ grid gs, drawPacman (posx $ pacman gs) (posy $ pacman gs)]
 
 makeView :: Grid -> Picture
-makeView grid = Pictures [drawGrid grid y x | x <- [0 .. gridLenght - 1], y <- [0..gridWidth - 1]]
+makeView grid = Pictures [drawGrid grid x y | x <- [0 .. gridWidth - 1], y <- [0..gridHeight - 1]]
 
 drawGrid :: Grid -> Int -> Int -> Picture
 drawGrid grid x y = case grid ! (x,y) of
@@ -24,17 +24,17 @@ drawGrid grid x y = case grid ! (x,y) of
 makeSquare :: Int -> Int -> Picture
 makeSquare x y = Color blue $ Polygon [pointOne, pointTwo, pointTree, pointFour, pointOne]
   where
-    pointOne  = (fromIntegral x * screenBlok - 200.0, fromIntegral y * screenBlok - 200.0)
-    pointTwo  = (fromIntegral x * screenBlok + screenBlok - 200.0, fromIntegral y * screenBlok - 200.0)
-    pointTree = (fromIntegral x * screenBlok + screenBlok - 200.0, fromIntegral y * screenBlok + screenBlok - 200.0)
-    pointFour = (fromIntegral x * screenBlok - 200.0, fromIntegral y * screenBlok + screenBlok - 200.0)
+    pointOne  = (fromIntegral x * fromIntegral screenBlok - (fromIntegral screenWidth / 2), fromIntegral y * fromIntegral screenBlok - (fromIntegral screenHeight / 2))
+    pointTwo  = (fromIntegral x * fromIntegral screenBlok + fromIntegral screenBlok - (fromIntegral screenWidth / 2), fromIntegral y * fromIntegral screenBlok - (fromIntegral screenHeight / 2))
+    pointTree = (fromIntegral x * fromIntegral screenBlok + fromIntegral screenBlok - (fromIntegral screenWidth / 2), fromIntegral y * fromIntegral screenBlok + fromIntegral screenBlok - (fromIntegral screenHeight / 2))
+    pointFour = (fromIntegral x * fromIntegral screenBlok - (fromIntegral screenWidth / 2), fromIntegral y * fromIntegral screenBlok + fromIntegral screenBlok - (fromIntegral screenHeight / 2)) 
 
 makePac :: Int -> Int -> Picture
-makePac x y = Translate ((fromIntegral x * screenBlok) + (screenBlok / 2) - 200) ((fromIntegral y * screenBlok) + (screenBlok / 2) -200) $ Color white $ circleSolid 5
+makePac x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color white $ circleSolid 5
 
  
 drawPacman :: Int -> Int -> Picture
-drawPacman x y = Translate ((fromIntegral x * screenBlok) + (screenBlok / 2) - 200) ((fromIntegral y * screenBlok) + (screenBlok / 2) -200) $ Color yellow $ circleSolid 10
+drawPacman x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ circleSolid 10
 
 
 
