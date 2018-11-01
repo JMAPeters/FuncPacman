@@ -9,7 +9,7 @@ import Data.Set
 type Grid = Array (Int, Int) String
 
 nO_SECS_BETWEEN_CYCLES :: Float
-nO_SECS_BETWEEN_CYCLES = 5
+nO_SECS_BETWEEN_CYCLES = 1
 
 screenWidth = screenBlok * gridWidth
 screenHeight = screenBlok * gridHeight
@@ -21,7 +21,7 @@ initialState :: GameState
 initialState = GameState startGrid startPacman 0 empty 0
 
 startPacman :: Pacman
-startPacman = Pacman 2 2 (0,0)
+startPacman = Pacman 2 2 'w'
 
 startGrid :: Grid
 startGrid = array ((0,0),(gridWidth,gridHeight)) [((0,0),"w"),((0,1),"w"),((0,2),"w"),((0,3),"w"),((0,4),"w"),
@@ -57,7 +57,7 @@ data InfoToShow = ShowNothing
 data Pacman = Pacman {
                 posx :: Int
               , posy :: Int
-              , dir :: (Int, Int)
+              , dir :: Char
 }
 
 data GameState = GameState {

@@ -7,7 +7,6 @@ import Model
 import Controller
 import Data.Array
 
-
 {- Veranderd data in beeld voor scherm -}
 
 view :: GameState -> IO Picture
