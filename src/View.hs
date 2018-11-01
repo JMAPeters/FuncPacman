@@ -4,21 +4,23 @@ module View where
 
 import Graphics.Gloss
 import Model
+import Controller
 import Data.Array
 
 
 {- Veranderd data in beeld voor scherm -}
 
 view :: GameState -> IO Picture
-view gs = return $ Pictures [makeView $ grid gs, drawPacman (posx $ pacman gs) (posy $ pacman gs)]
+view gs = return $ Pictures [makeView gs, drawPacman (posx $ pacman gs) (posy $ pacman gs), drawScore gs]
 
-makeView :: Grid -> Picture
-makeView grid = Pictures [drawGrid grid x y | x <- [0 .. gridWidth - 1], y <- [0..gridHeight - 1]]
+makeView :: GameState -> Picture
+makeView gstate = Pictures [drawGrid gstate x y | x <- [0 .. gridWidth - 1], y <- [0..gridHeight - 1]]
 
-drawGrid :: Grid -> Int -> Int -> Picture
-drawGrid grid x y = case grid ! (x,y) of
+drawGrid :: GameState -> Int -> Int -> Picture
+drawGrid gstate x y = case (grid gstate) ! (x,y) of
                     "w" -> makeSquare x y
-                    "c" -> makePac x y 
+                    "c" | checkCoin x y (coinList gstate) -> blank
+                    "c" -> makePac x y
                     " " -> blank
 
 makeSquare :: Int -> Int -> Picture
@@ -37,7 +39,8 @@ drawPacman :: Int -> Int -> Picture
 drawPacman x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ circleSolid 10
 
 
-
+drawScore :: GameState -> Picture
+drawScore gstate = Translate (5 - fromIntegral screenWidth / 2) (fromIntegral screenHeight / 2 - fromIntegral screenBlok + 5) $ Scale 0.2 0.2 $ Color white $ text ("Score: " ++ (show (score gstate)))
 
 
 

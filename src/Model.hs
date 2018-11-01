@@ -4,9 +4,9 @@ module Model where
 
 {- lijst van alle data die gebruikt kan worden -}
 import Data.Array
+import Data.Set
 
 type Grid = Array (Int, Int) String
-type Score = Int
 
 nO_SECS_BETWEEN_CYCLES :: Float
 nO_SECS_BETWEEN_CYCLES = 5
@@ -18,10 +18,10 @@ gridWidth = 10
 screenBlok = 40
 
 initialState :: GameState
-initialState = GameState startGrid startPacman 0
+initialState = GameState startGrid startPacman 0 empty 0
 
 startPacman :: Pacman
-startPacman = Pacman 2 2
+startPacman = Pacman 2 2 (0,0)
 
 startGrid :: Grid
 startGrid = array ((0,0),(gridWidth,gridHeight)) [((0,0),"w"),((0,1),"w"),((0,2),"w"),((0,3),"w"),((0,4),"w"),
@@ -57,10 +57,13 @@ data InfoToShow = ShowNothing
 data Pacman = Pacman {
                 posx :: Int
               , posy :: Int
+              , dir :: (Int, Int)
 }
 
 data GameState = GameState {
                    grid :: Grid
                  , pacman :: Pacman
+                 , score :: Int
+                 , coinList :: Set (Int,Int)
                  , elapsedTime :: Float
                  }
