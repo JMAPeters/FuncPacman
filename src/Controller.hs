@@ -11,10 +11,6 @@ import Data.Array
 import Data.Array.MArray
 import Data.Set
 
-
-{- Regelt input en verandering in de game -}
-
-
 -- | Handle one iteration of the game
 step :: Float -> GameState -> IO GameState
 step secs gstate
@@ -31,6 +27,16 @@ movePacman secs gstate = case (dir $ pacman gstate) of
                           'w' -> changePos ((posx $ pacman gstate) - 1) (posy $ pacman gstate) (grid gstate) gstate
                           'x' -> gstate {elapsedTime = elapsedTime gstate + secs }
 
+changePos :: Int -> Int -> Grid -> GameState -> GameState
+changePos x y grid gstate = case grid ! (x,y) of
+                            "w" -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'x'}
+                            "c" | checkCoin x y (coinList gstate) -> gstate {pacman = Pacman x y (dir $ pacman gstate)}
+                            "c" -> gstate {pacman = Pacman x y (dir $ pacman gstate), score = (score gstate) + 1, coinList = insert (x,y) (coinList gstate)}
+                            _ -> gstate {pacman = Pacman x y (dir $ pacman gstate)}
+
+checkCoin :: Int -> Int -> Set (Int, Int) -> Bool
+checkCoin x y coinList = member (x,y) coinList
+
 -- | Handle user input
 input :: Event -> GameState -> IO GameState
 input e gstate = return (inputKey e gstate)
@@ -45,19 +51,9 @@ inputKey (EventKey (Char c) state _ _) gstate
               'a' | checkPos ((posx $ pacman gstate) - 1) (posy $ pacman gstate) (grid gstate) -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'w'}
               _ -> gstate
     _ -> gstate
-inputKey _ gstate = gstate -- Otherwise keep the same
+inputKey _ gstate = gstate
 
 checkPos :: Int -> Int -> Grid -> Bool
 checkPos x y grid = case grid ! (x, y) of
                     "w" -> False
                     _ -> True
-
-changePos :: Int -> Int -> Grid -> GameState -> GameState
-changePos x y grid gstate = case grid ! (x,y) of
-                            "w" -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'x'}
-                            "c" | checkCoin x y (coinList gstate) -> gstate {pacman = Pacman x y (dir $ pacman gstate)}
-                            "c" -> gstate {pacman = Pacman x y (dir $ pacman gstate), score = (score gstate) + 1, coinList = insert (x,y) (coinList gstate)}
-                            _ -> gstate {pacman = Pacman x y (dir $ pacman gstate)}
-
-checkCoin :: Int -> Int -> Set (Int, Int) -> Bool
-checkCoin x y coinList = member (x,y) coinList

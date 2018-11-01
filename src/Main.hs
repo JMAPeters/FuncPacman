@@ -22,10 +22,8 @@ Controller: how to change gamestate
 -}
 
 {-
-pec oppakken
 goed kunnen lopen
 level inladen
-score display
 ghosts
 snoepjes
 win conditie

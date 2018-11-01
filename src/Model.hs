@@ -21,7 +21,7 @@ initialState :: GameState
 initialState = GameState startGrid startPacman 0 empty 0
 
 startPacman :: Pacman
-startPacman = Pacman 2 2 'w'
+startPacman = Pacman 2 2 'x'
 
 startGrid :: Grid
 startGrid = array ((0,0),(gridWidth,gridHeight)) [((0,0),"w"),((0,1),"w"),((0,2),"w"),((0,3),"w"),((0,4),"w"),
