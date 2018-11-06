@@ -6,6 +6,7 @@ import Graphics.Gloss
 import Model
 import Controller
 import Data.Array
+import Data.Set
 
 {- Veranderd data in beeld voor scherm -}
 
@@ -13,7 +14,7 @@ view :: GameState -> IO Picture
 view gs = return $ Pictures [makeView gs, drawPacman (posx $ pacman gs) (posy $ pacman gs), drawScore gs]
 
 makeView :: GameState -> Picture
-makeView gstate = Pictures [drawGrid gstate x y | x <- [0 .. gridWidth - 1], y <- [0..gridHeight - 1]]
+makeView gstate = Pictures [drawGrid gstate x y | x <- [0 .. fromIntegral gridWidth - 1], y <- [0.. fromIntegral gridHeight - 1]]
 
 drawGrid :: GameState -> Int -> Int -> Picture
 drawGrid gstate x y = case (grid gstate) ! (x,y) of

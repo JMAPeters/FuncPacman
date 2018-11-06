@@ -57,3 +57,10 @@ checkPos :: Int -> Int -> Grid -> Bool
 checkPos x y grid = case grid ! (x, y) of
                     "w" -> False
                     _ -> True
+
+
+
+-- voor het inladen van het level
+getWords :: FilePath -> IO [String]
+getWords path = do contents <- readFile path
+                   return (lines contents)                    
