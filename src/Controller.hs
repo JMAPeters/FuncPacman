@@ -30,8 +30,8 @@ movePacman secs gstate = case (dir $ pacman gstate) of
 changePos :: Int -> Int -> Grid -> GameState -> GameState
 changePos x y grid gstate = case grid ! (x,y) of
                             "w" -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'x'}
-                            "c" | checkCoin x y (coinList gstate) -> gstate {pacman = Pacman x y (dir $ pacman gstate)}
-                            "c" -> gstate {pacman = Pacman x y (dir $ pacman gstate), score = (score gstate) + 1, coinList = insert (x,y) (coinList gstate)}
+                            "." | checkCoin x y (coinList gstate) -> gstate {pacman = Pacman x y (dir $ pacman gstate)}
+                            "." -> gstate {pacman = Pacman x y (dir $ pacman gstate), score = (score gstate) + 1, coinList = insert (x,y) (coinList gstate)}
                             _ -> gstate {pacman = Pacman x y (dir $ pacman gstate)}
 
 checkCoin :: Int -> Int -> Set (Int, Int) -> Bool
