@@ -40,10 +40,7 @@ checkCoin x y coinList = member (x,y) coinList
 ----------------------------------------------------------------------------------
 
 moveGhosts :: Float -> GameState -> GameState
-moveGhosts secs gstate = gstate {ghosts = func gstate }
-
-func :: GameState -> [Ghost]
-func gstate = map (\ghost -> moveGhost gstate ghost) (ghosts gstate)
+moveGhosts secs gstate = gstate {ghosts = (map (\ghost -> moveGhost gstate ghost) (ghosts gstate))}
 
 moveGhost :: GameState -> Ghost -> Ghost
 moveGhost gstate ghost = case (ghostGetDir ghost (ghostToGo (gposx ghost) (gposy ghost) (grid gstate) ghost)) gstate of
@@ -67,7 +64,7 @@ findDir ghost gstate
                       case () of
                       ()  | (gposy ghost) < (posy $ pacman gstate) -> ['z', 'n', 'o', 'w']
                           | (gposy ghost) == (posy $ pacman gstate) -> ['z', 'w', 'o', 'n']
-                          | otherwise -> ['n', 'z', 'o', 'w']
+                          | otherwise -> ['z', 'o', 'n', 'w']
   | otherwise =    
                       case () of
                       ()  | (gposy ghost) < (posy $ pacman gstate) -> ['w', 'z', 'n', 'o']
