@@ -14,6 +14,7 @@ import Data.List hiding (insert)
 -- | Handle one iteration of the game
 step :: Float -> GameState -> IO GameState
 step secs gstate
+  | isPauzed gstate = return $ gstate
   | elapsedTime gstate + secs > nO_SECS_BETWEEN_CYCLES 
       = return $ movePacman secs (moveGhosts secs gstate) 
   | otherwise =
@@ -88,6 +89,7 @@ inputKey :: Event -> GameState -> GameState
 inputKey (EventKey (Char c) state _ _) gstate
   = case state of
     Down -> case c of 
+              'p' -> gstate { isPauzed = not (isPauzed gstate) }
               'w' | checkPos (posx $ pacman gstate) ((posy $ pacman gstate) + 1) (grid gstate) -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'n'}
               'd' | checkPos ((posx $ pacman gstate) + 1) (posy $ pacman gstate) (grid gstate) -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'o'}  
               's' | checkPos (posx $ pacman gstate) ((posy $ pacman gstate) - 1) (grid gstate) -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'z'} 

@@ -20,7 +20,7 @@ gridWidth = 41
 screenBlok = 30
 
 initialState :: [String] -> StdGen -> GameState
-initialState file rng = GameState (startGrid file) startPacman [startGhost, startGhost2] 0 empty 0
+initialState file rng = GameState (startGrid file) startPacman [startGhost, startGhost2] 0 empty 0 False
 
 startPacman :: Pacman
 startPacman = Pacman 18 20 'x'
@@ -91,4 +91,5 @@ data GameState = GameState {
                  , score :: Int
                  , coinList :: Set (Int,Int)
                  , elapsedTime :: Float
+                 , isPauzed :: Bool
                  }

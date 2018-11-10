@@ -13,7 +13,7 @@ import Data.Set hiding (map)
 {- Veranderd data in beeld voor scherm -}
 
 view :: GameState -> IO Picture
-view gs = return $ Pictures ([makeView gs, drawPacman (posx $ pacman gs) (posy $ pacman gs), drawScore gs] ++ map (\ghost -> (drawGhost (gposx $ ghost) (gposy $ ghost))) (ghosts gs))
+view gs = return $ Pictures ([makeView gs, drawPacman (posx $ pacman gs) (posy $ pacman gs), drawScore gs, drawPauzed gs] ++ map (\ghost -> (drawGhost (gposx $ ghost) (gposy $ ghost))) (ghosts gs))
 
 makeView :: GameState -> Picture
 makeView gstate = Pictures [drawGrid gstate x y | x <- [0 .. fromIntegral gridWidth - 1], y <- [0.. fromIntegral gridHeight - 1]]
@@ -46,14 +46,15 @@ drawGhost x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromInt
 drawScore :: GameState -> Picture
 drawScore gstate = Translate (5 - fromIntegral screenWidth / 2) (fromIntegral screenHeight / 2 - fromIntegral screenBlok + 5) $ Scale 0.2 0.2 $ Color white $ text ("Score: " ++ (show (score gstate)))
 
---draw :: Picture
---draw = Color white $ text (show $ randomNumber)
-
+drawPauzed :: GameState -> Picture
+drawPauzed gstate | (isPauzed gstate) = Translate (5 - fromIntegral screenWidth / 27) (fromIntegral screenHeight / 2 - fromIntegral screenBlok) $ Scale 0.2 0.2 $ Color red $ text "Pauzed"
+                  | otherwise = text " "
 customYellowColour :: Color
 customYellowColour = makeColorI 255 255 192 192
 
 customBlueColour :: Color
 customBlueColour = makeColorI 0 20 223 223
 
-
+customTransparentColor :: Color
+customTransparentColor = makeColorI 0 0 0 0
 
