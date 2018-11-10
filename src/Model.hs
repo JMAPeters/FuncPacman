@@ -17,7 +17,7 @@ screenWidth = screenBlok * gridWidth
 screenHeight = screenBlok * gridHeight
 gridHeight = 25
 gridWidth = 41
-screenBlok = 40
+screenBlok = 30
 
 initialState :: [String] -> StdGen -> GameState
 initialState file rng = GameState (startGrid file) startPacman [startGhost, startGhost2] 0 empty 0
