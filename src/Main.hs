@@ -27,4 +27,6 @@ level inladen
 ghosts
 snoepjes
 win conditie
+highscore
+animatie
 -}

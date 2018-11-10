@@ -6,11 +6,13 @@ import Graphics.Gloss
 import Model
 import Controller
 import Data.Array
+import System.Random
+import Data.Functor
 
 {- Veranderd data in beeld voor scherm -}
 
 view :: GameState -> IO Picture
-view gs = return $ Pictures [makeView gs, drawPacman (posx $ pacman gs) (posy $ pacman gs), drawScore gs]
+view gs = return $ Pictures ([makeView gs, drawPacman (posx $ pacman gs) (posy $ pacman gs), drawScore gs] ++ map (\ghost -> (drawGhost (gposx $ ghost) (gposy $ ghost))) (ghosts gs))
 
 makeView :: GameState -> Picture
 makeView gstate = Pictures [drawGrid gstate x y | x <- [0 .. gridWidth - 1], y <- [0..gridHeight - 1]]
@@ -20,7 +22,7 @@ drawGrid gstate x y = case (grid gstate) ! (x,y) of
                     "w" -> makeSquare x y
                     "c" | checkCoin x y (coinList gstate) -> blank
                     "c" -> makePac x y
-                    " " -> blank
+                    _ -> blank
 
 makeSquare :: Int -> Int -> Picture
 makeSquare x y = Color blue $ Polygon [pointOne, pointTwo, pointTree, pointFour, pointOne]
@@ -36,20 +38,15 @@ makePac x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromInteg
 drawPacman :: Int -> Int -> Picture
 drawPacman x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ circleSolid 10
 
+drawGhost :: Int -> Int -> Picture
+drawGhost x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color green $ circleSolid 10
+
 drawScore :: GameState -> Picture
 drawScore gstate = Translate (5 - fromIntegral screenWidth / 2) (fromIntegral screenHeight / 2 - fromIntegral screenBlok + 5) $ Scale 0.2 0.2 $ Color white $ text ("Score: " ++ (show (score gstate)))
 
+--draw :: Picture
+--draw = Color white $ text (show $ randomNumber)
 
 
-
-
-{-view :: GameState -> IO Picture
-view = return . viewPure
-
-viewPure :: GameState -> Picture
-viewPure gstate = case infoToShow gstate of
-  ShowNothing   -> blank
-  ShowANumber n -> color green (text (show n))
-  ShowAChar   c -> color green (text [c])-}
 
 

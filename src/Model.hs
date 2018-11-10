@@ -18,10 +18,16 @@ gridWidth = 10
 screenBlok = 40
 
 initialState :: GameState
-initialState = GameState startGrid startPacman 0 empty 0
+initialState = GameState startGrid startPacman [startGhost, startGhost2] 0 empty 0
 
 startPacman :: Pacman
 startPacman = Pacman 2 2 'x'
+
+startGhost :: Ghost
+startGhost = Ghost 2 1 'x'
+
+startGhost2 :: Ghost
+startGhost2 = Ghost 7 3 'x'
 
 startGrid :: Grid
 startGrid = array ((0,0),(gridWidth,gridHeight)) [((0,0),"w"),((0,1),"w"),((0,2),"w"),((0,3),"w"),((0,4),"w"),
@@ -35,24 +41,6 @@ startGrid = array ((0,0),(gridWidth,gridHeight)) [((0,0),"w"),((0,1),"w"),((0,2)
                                                   ((8,0),"w"),((8,1),"c"),((8,2),"w"),((8,3),"c"),((8,4),"w"),
                                                   ((9,0),"w"),((9,1),"w"),((9,2),"w"),((9,3),"w"),((9,4),"w")]
 
-data Items =
-  Wall Char
-  | Pac Char
-  | Ghost SGhost
-  | PowerUp Char
-  | Fruit Char
-  | EmptySpace Char
-
-data SGhost =
-  Red Char
-  | Blue Char
-  | Green Char
-  | Yellow Char
-
-
-data InfoToShow = ShowNothing
-                | ShowANumber Int
-                | ShowAChar   Char
 
 data Pacman = Pacman {
                 posx :: Int
@@ -60,9 +48,16 @@ data Pacman = Pacman {
               , dir :: Char
 }
 
+data Ghost = Ghost {
+              gposx :: Int
+            , gposy :: Int
+            , gdir :: Char
+}
+
 data GameState = GameState {
                    grid :: Grid
                  , pacman :: Pacman
+                 , ghosts :: [Ghost]
                  , score :: Int
                  , coinList :: Set (Int,Int)
                  , elapsedTime :: Float
