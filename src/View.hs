@@ -6,12 +6,9 @@ import Graphics.Gloss
 import Model
 import Controller
 import Data.Array
-<<<<<<< HEAD
 import System.Random
 import Data.Functor
-=======
-import Data.Set
->>>>>>> d1ed49aed38c5102a723fc3a91ec4a42a4493574
+import Data.Set hiding (map)
 
 {- Veranderd data in beeld voor scherm -}
 
@@ -24,14 +21,9 @@ makeView gstate = Pictures [drawGrid gstate x y | x <- [0 .. fromIntegral gridWi
 drawGrid :: GameState -> Int -> Int -> Picture
 drawGrid gstate x y = case (grid gstate) ! (x,y) of
                     "w" -> makeSquare x y
-<<<<<<< HEAD
-                    "c" | checkCoin x y (coinList gstate) -> blank
-                    "c" -> makePac x y
-=======
                     "." | checkCoin x y (coinList gstate) -> blank
                     "." -> makePac x y
                     " " -> blank
->>>>>>> d1ed49aed38c5102a723fc3a91ec4a42a4493574
                     _ -> blank
 
 makeSquare :: Int -> Int -> Picture
