@@ -15,8 +15,8 @@ nO_SECS_BETWEEN_CYCLES = 1
 
 screenWidth = screenBlok * gridWidth
 screenHeight = screenBlok * gridHeight
-gridHeight = 17
-gridWidth = 58
+gridHeight = 25
+gridWidth = 41
 screenBlok = 40
 
 initialState :: [String] -> StdGen -> GameState
@@ -28,7 +28,7 @@ startPacman :: Pacman
 startPacman = Pacman 1 1 'x'
 
 startGrid :: [String] -> Grid
-startGrid (x:y:r) = array ((0,0), (readLine x, readLine y)) (createGridFromFile r 0 0)
+startGrid lines = array ((0,0), (gridWidth, gridHeight)) (createGridFromFile lines 0 0)
 {-}
 startGrid (x:y:r) = array ((0,0), (readLine x, readLine y)) [((0,0),"w"),((0,1),"w"),((0,2),"w"),((0,3),"w"),((0,4),"w"),
                                                             ((1,0),"w"),((1,1),"c"),((1,2),"w"),((1,3),"c"),((1,4),"w"),
