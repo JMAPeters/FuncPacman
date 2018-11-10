@@ -5,15 +5,19 @@ import Model
 import View
 
 import Graphics.Gloss.Interface.IO.Game
+import System.Random
 
 main :: IO ()
-main = playIO (InWindow "Pacman" (screenWidth, screenHeight) (0, 0)) -- Or FullScreen
-              black            -- Background color
-              5              -- Frames per second
-              initialState     -- Initial state
-              view             -- View function
-              input            -- Event function
-              step             -- Step function
+main = do rng <- getStdGen
+          fileContent <- getWords "textfiles/grid.txt"
+          print fileContent
+          playIO (InWindow "Pacman" (fromIntegral screenWidth, fromIntegral screenHeight) (0, 0)) -- Or FullScreen
+            black            -- Background color
+            5              -- Frames per second
+            (initialState fileContent rng)     -- Initial state
+            view             -- View function
+            input            -- Event function
+            step             -- Step function
 
 {-
 Model : data type of gamestate
