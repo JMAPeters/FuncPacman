@@ -15,7 +15,7 @@ import Data.List hiding (insert)
 step :: Float -> GameState -> IO GameState
 step secs gstate
   | elapsedTime gstate + secs > nO_SECS_BETWEEN_CYCLES 
-      = return $ moveGhosts secs gstate 
+      = return $ movePacman secs (moveGhosts secs gstate) 
   | otherwise =
               return $ gstate { elapsedTime = elapsedTime gstate + secs }
 
