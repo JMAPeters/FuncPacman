@@ -10,7 +10,6 @@ import System.Random
 main :: IO ()
 main = do rng <- getStdGen
           fileContent <- getWords "textfiles/grid.txt"
-          print fileContent
           playIO (InWindow "Pacman" (fromIntegral screenWidth, fromIntegral screenHeight) (0, 0)) -- Or FullScreen
             black            -- Background color
             5              -- Frames per second
@@ -26,11 +25,11 @@ Controller: how to change gamestate
 -}
 
 {-
-goed kunnen lopen
-level inladen
-ghosts
-snoepjes
-win conditie
-highscore
-animatie
+goed kunnen lopen - check
+level inladen - check
+ghosts - half check
+snoepjes 
+win conditie - wordt aan gewerkt (Jorn)
+highscore - doubt of we dit nog gaan doen
+animatie - wordt aan gewerkt (Patrick)
 -}

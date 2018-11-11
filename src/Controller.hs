@@ -11,7 +11,7 @@ import Data.Array.MArray
 import Data.Set hiding (filter, map)
 import Data.List hiding (insert)
 
--- | Handle one iteration of the game
+-- Handle one iteration of the game
 step :: Float -> GameState -> IO GameState
 step secs gstate
   | isPauzed gstate = return $ gstate
@@ -20,7 +20,7 @@ step secs gstate
   | otherwise =
               return $ gstate { elapsedTime = elapsedTime gstate + secs }
 
-----------------------------------------------------------------------------------
+---movement of pacman-------------------------------------------------------------------------------
 movePacman :: Float -> GameState -> GameState
 movePacman secs gstate = case (dir $ pacman gstate) of
                           'n' -> changePos (posx $ pacman gstate) ((posy $ pacman gstate) + 1) (grid gstate) gstate
@@ -40,6 +40,9 @@ checkCoin :: Int -> Int -> Set (Int, Int) -> Bool
 checkCoin x y coinList = member (x,y) coinList
 ----------------------------------------------------------------------------------
 
+
+
+---movement of ghosts----------------------------------------------------------------------------------------------------------------------------------
 moveGhosts :: Float -> GameState -> GameState
 moveGhosts secs gstate = gstate {ghosts = (map (\ghost -> moveGhost gstate ghost) (ghosts gstate))}
 
@@ -54,6 +57,7 @@ moveGhost gstate ghost = case (ghostGetDir ghost (ghostToGo (gposx ghost) (gposy
 ghostGetDir :: Ghost -> [Char] -> GameState -> Char
 ghostGetDir ghost dirList gstate = head (intersect (findDir ghost gstate) dirList)
 
+-- AI for ghosts
 findDir :: Ghost -> GameState -> [Char]
 findDir ghost gstate
   | (gposx ghost) < (posx $ pacman gstate) = 
@@ -80,7 +84,8 @@ ghostToGo x y grid ghost = filter (\x -> x /= 'x') [(checkDir 'n'), (checkDir 'o
                                             'z' | checkPos (gposx ghost) ((gposy ghost) - 1) grid -> 'z'
                                             'w' | checkPos ((gposx ghost) - 1) (gposy ghost) grid -> 'w'
                                             _ -> 'x'
-                      
+---------------------------------------------------------------------------------------------------------------------------------         
+                                            
 -- | Handle user input
 input :: Event -> GameState -> IO GameState
 input e gstate = return (inputKey e gstate)
