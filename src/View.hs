@@ -13,7 +13,13 @@ import Data.Set hiding (map)
 {- Veranderd data in beeld voor scherm -}
 
 view :: GameState -> IO Picture
-view gs = return $ Pictures ([makeView gs, drawPacman (posx $ pacman gs) (posy $ pacman gs), drawScore gs, drawPauzed gs] ++ map (\ghost -> (drawGhost (gposx $ ghost) (gposy $ ghost))) (ghosts gs))
+view gs = return $ chooseView gs
+
+chooseView :: GameState -> Picture
+chooseView gs
+          | isGameOver gs == True = Pictures ([drawGameOver gs])
+          | isWon gs == True = Pictures ([drawWin gs, drawPauzed gs])
+          | otherwise = Pictures ([makeView gs, drawPacman (posx $ pacman gs) (posy $ pacman gs), drawScore gs, drawPauzed gs] ++ map (\ghost -> (drawGhost (gposx $ ghost) (gposy $ ghost))) (ghosts gs))
 
 makeView :: GameState -> Picture
 makeView gstate = Pictures [drawGrid gstate x y | x <- [0 .. fromIntegral gridWidth - 1], y <- [0.. fromIntegral gridHeight - 1]]
@@ -58,3 +64,8 @@ customBlueColour = makeColorI 0 20 223 223
 customTransparentColor :: Color
 customTransparentColor = makeColorI 0 0 0 0
 
+drawWin :: GameState -> Picture
+drawWin gstate = Translate (100 - fromIntegral screenWidth / 2) (50 - fromIntegral screenHeight / 2 - fromIntegral screenBlok + 5) $ Scale 0.5 0.5 $ Color white $ text ("You Won")
+
+drawGameOver :: GameState -> Picture
+drawGameOver gstate = Translate (100 - fromIntegral screenWidth / 2) (50 - fromIntegral screenHeight / 2 - fromIntegral screenBlok + 5) $ Scale 0.5 0.5 $ Color white $ text ("GameOver")
