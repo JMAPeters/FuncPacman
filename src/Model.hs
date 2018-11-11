@@ -23,7 +23,7 @@ initialState :: [String] -> StdGen -> GameState
 initialState (x:r) rng = GameState (startGrid r) startPacman [startGhost, startGhost2] 0 empty 0 False False False (read x)
 
 startPacman :: Pacman
-startPacman = Pacman 18 20 'x'
+startPacman = Pacman 18 20 'x' False
 
 startGhost :: Ghost
 startGhost = Ghost 14 19 'x'

@@ -31,12 +31,12 @@ movePacman secs gstate = case (dir $ pacman gstate) of
 
 changePos :: Int -> Int -> Grid -> GameState -> GameState
 changePos x y grid gstate = case grid ! (x,y) of
-                            "w" -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'x'}
-                            "." | checkCoin x y (coinList gstate) -> gstate {pacman = Pacman x y (dir $ pacman gstate)}
-                            "." -> gstate {pacman = Pacman x y (dir $ pacman gstate), score = (score gstate) + 1, coinList = insert (x,y) (coinList gstate), isPauzed = checkWon gstate, isWon = checkWon gstate}
-                            "c" | checkCoin x y (coinList gstate) -> gstate {pacman = Pacman x y (dir $ pacman gstate)}
-                            "c" -> gstate {pacman = Pacman x y (dir $ pacman gstate), score = (score gstate) + 100, coinList = insert (x,y) (coinList gstate), isPauzed = checkWon gstate, isWon = checkWon gstate}
-                            _ -> gstate {pacman = Pacman x y (dir $ pacman gstate)}
+                            "w" -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'x' (superMode $ pacman gstate)}
+                            "." | checkCoin x y (coinList gstate) -> gstate {pacman = Pacman x y (dir $ pacman gstate) (superMode $ pacman gstate)}
+                            "." -> gstate {pacman = Pacman x y (dir $ pacman gstate) (superMode $ pacman gstate), score = (score gstate) + 1, coinList = insert (x,y) (coinList gstate), isPauzed = checkWon gstate, isWon = checkWon gstate}
+                            "c" | checkCoin x y (coinList gstate) -> gstate {pacman = Pacman x y (dir $ pacman gstate) (superMode $ pacman gstate)}
+                            "c" -> gstate {pacman = Pacman x y (dir $ pacman gstate) True, score = (score gstate) + 100, coinList = insert (x,y) (coinList gstate), isPauzed = checkWon gstate, isWon = checkWon gstate}
+                            _ -> gstate {pacman = Pacman x y (dir $ pacman gstate) (superMode $ pacman gstate)}
 
 checkCoin :: Int -> Int -> Set (Int, Int) -> Bool
 checkCoin x y coinList = member (x,y) coinList
@@ -114,10 +114,10 @@ inputKey (EventKey (Char c) state _ _) gstate
   = case state of
     Down -> case c of 
               'p' -> gstate { isPauzed = not (isPauzed gstate) }
-              'w' | checkPos (posx $ pacman gstate) ((posy $ pacman gstate) + 1) (grid gstate) -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'n'}
-              'd' | checkPos ((posx $ pacman gstate) + 1) (posy $ pacman gstate) (grid gstate) -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'o'}  
-              's' | checkPos (posx $ pacman gstate) ((posy $ pacman gstate) - 1) (grid gstate) -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'z'} 
-              'a' | checkPos ((posx $ pacman gstate) - 1) (posy $ pacman gstate) (grid gstate) -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'w'}
+              'w' | checkPos (posx $ pacman gstate) ((posy $ pacman gstate) + 1) (grid gstate) -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'n' (superMode $ pacman gstate)}
+              'd' | checkPos ((posx $ pacman gstate) + 1) (posy $ pacman gstate) (grid gstate) -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'o' (superMode $ pacman gstate)}  
+              's' | checkPos (posx $ pacman gstate) ((posy $ pacman gstate) - 1) (grid gstate) -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'z' (superMode $ pacman gstate)} 
+              'a' | checkPos ((posx $ pacman gstate) - 1) (posy $ pacman gstate) (grid gstate) -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'w' (superMode $ pacman gstate)}
               _ -> gstate
     _ -> gstate
 inputKey _ gstate = gstate
