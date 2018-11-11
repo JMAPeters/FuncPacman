@@ -29,6 +29,8 @@ drawGrid gstate x y = case (grid gstate) ! (x,y) of
                     "w" -> makeSquare x y
                     "." | checkCoin x y (coinList gstate) -> blank
                     "." -> makePac x y
+                    "c" | checkCoin x y (coinList gstate) -> blank
+                    "c" -> makeCandy x y
                     " " -> blank
                     _ -> blank
 
@@ -42,7 +44,10 @@ makeSquare x y = Color customBlueColour $ Polygon [pointOne, pointTwo, pointTree
 
 makePac :: Int -> Int -> Picture
 makePac x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color customYellowColour $ circleSolid 5
- 
+
+makeCandy :: Int -> Int -> Picture
+makeCandy x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color red $ circleSolid 8
+
 drawPacman :: Int -> Int -> Picture
 drawPacman x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ circleSolid 15
 

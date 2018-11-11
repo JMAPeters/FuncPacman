@@ -54,6 +54,7 @@ data Pacman = Pacman {
                 posx :: Int
               , posy :: Int
               , dir :: Char
+              , superMode :: Bool
 }
 
 data Ghost = Ghost {
