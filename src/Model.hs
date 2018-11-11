@@ -20,7 +20,7 @@ gridWidth = 41
 screenBlok = 30
 
 initialState :: [String] -> StdGen -> GameState
-initialState file rng = GameState (startGrid file) startPacman [startGhost, startGhost2] 0 empty 0 False
+initialState (x:r) rng = GameState (startGrid r) startPacman [startGhost, startGhost2] 0 empty 0 False False False (read x)
 
 startPacman :: Pacman
 startPacman = Pacman 18 20 'x'
@@ -32,7 +32,7 @@ startGhost2 :: Ghost
 startGhost2 = Ghost 14 20 'x'
 
 startGrid :: [String] -> Grid
-startGrid lines = array ((0,0), (gridWidth, gridHeight)) (createGridFromFile lines 0 0)
+startGrid file = array ((0,0), (gridWidth, gridHeight)) (createGridFromFile file 0 0)
 {-}
 startGrid (x:y:r) = array ((0,0), (readLine x, readLine y)) [((0,0),"w"),((0,1),"w"),((0,2),"w"),((0,3),"w"),((0,4),"w"),
                                                             ((1,0),"w"),((1,1),"c"),((1,2),"w"),((1,3),"c"),((1,4),"w"),
@@ -56,21 +56,6 @@ createElementFromLine (y:ys) w h = ((w, h), charToString y) : createElementFromL
 
 charToString :: Char -> String
 charToString c = [c]
-{-
-where dimensions = (read top) :: (Int,Int)
-        width :: Int
-        width = fst dimensions
-        height :: Int
-        height = snd dimensions
--}
-readLine :: String -> Int
-readLine line = read line :: Int
-
-getDimentions :: String -> String -> (Int,Int)
-getDimentions first second = (width,height)
-  where width = (read first) :: Int
-        height = (read second) :: Int
-
 
 data Pacman = Pacman {
                 posx :: Int
@@ -92,4 +77,7 @@ data GameState = GameState {
                  , coinList :: Set (Int,Int)
                  , elapsedTime :: Float
                  , isPauzed :: Bool
+                 , isGameOver :: Bool
+                 , isWon :: Bool
+                 , amountOfPecs :: Int
                  }
