@@ -96,15 +96,14 @@ ghostToGo x y grid ghost = filter (\x -> x /= 'x') [(checkDir 'n'), (checkDir 'o
                                             'z' | checkPos (gposx ghost) ((gposy ghost) - 1) grid -> 'z'
                                             'w' | checkPos ((gposx ghost) - 1) (gposy ghost) grid -> 'w'
                                             _ -> 'x'
-<<<<<<< HEAD
----------------------------------------------------------------------------------------------------------------------------------         
+
+
+
+
+
+
+
                                             
-=======
-
-
-
->>>>>>> 449493f087473e8fe4bcd0694cb179457c87c04d
--- | Handle user input
 input :: Event -> GameState -> IO GameState
 input e gstate = return (inputKey e gstate)
 
