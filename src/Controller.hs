@@ -16,7 +16,7 @@ step :: Float -> GameState -> IO GameState
 step secs gstate
   | isPauzed gstate = return $ gstate
   | elapsedTime gstate + secs > nO_SECS_BETWEEN_CYCLES 
-      = return $ movePacman secs (moveGhosts secs gstate) 
+      = return $ movePacman secs (moveGhosts secs gstate)
   | otherwise =
               return $ gstate { elapsedTime = elapsedTime gstate + secs }
 
@@ -33,18 +33,30 @@ changePos :: Int -> Int -> Grid -> GameState -> GameState
 changePos x y grid gstate = case grid ! (x,y) of
                             "w" -> gstate {pacman = Pacman (posx $ pacman gstate) (posy $ pacman gstate) 'x'}
                             "." | checkCoin x y (coinList gstate) -> gstate {pacman = Pacman x y (dir $ pacman gstate)}
-                            "." -> gstate {pacman = Pacman x y (dir $ pacman gstate), score = (score gstate) + 1, coinList = insert (x,y) (coinList gstate)}
+                            "." -> gstate {pacman = Pacman x y (dir $ pacman gstate), score = (score gstate) + 1, coinList = insert (x,y) (coinList gstate), isPauzed = checkWon gstate, isWon = checkWon gstate}
                             _ -> gstate {pacman = Pacman x y (dir $ pacman gstate)}
 
 checkCoin :: Int -> Int -> Set (Int, Int) -> Bool
 checkCoin x y coinList = member (x,y) coinList
+
+checkWon :: GameState -> Bool
+checkWon gstate
+            | length (coinList gstate) == (amountOfPecs gstate) = True
+            | otherwise = False
 ----------------------------------------------------------------------------------
 
 
 
 ---movement of ghosts----------------------------------------------------------------------------------------------------------------------------------
 moveGhosts :: Float -> GameState -> GameState
-moveGhosts secs gstate = gstate {ghosts = (map (\ghost -> moveGhost gstate ghost) (ghosts gstate))}
+moveGhosts secs gstate
+                | (elem True (map (\ghost -> checkColision gstate ghost) (ghosts gstate))) == True = gstate {isGameOver = True}
+                | otherwise = gstate {ghosts = (map (\ghost -> moveGhost gstate ghost) (ghosts gstate))}
+
+checkColision :: GameState -> Ghost -> Bool
+checkColision gstate ghost
+                        | (posx $ pacman gstate) == (gposx ghost) && (posy $ pacman gstate) == (gposy ghost) = True
+                        | otherwise = False
 
 moveGhost :: GameState -> Ghost -> Ghost
 moveGhost gstate ghost = case (ghostGetDir ghost (ghostToGo (gposx ghost) (gposy ghost) (grid gstate) ghost)) gstate of
@@ -84,8 +96,14 @@ ghostToGo x y grid ghost = filter (\x -> x /= 'x') [(checkDir 'n'), (checkDir 'o
                                             'z' | checkPos (gposx ghost) ((gposy ghost) - 1) grid -> 'z'
                                             'w' | checkPos ((gposx ghost) - 1) (gposy ghost) grid -> 'w'
                                             _ -> 'x'
+<<<<<<< HEAD
 ---------------------------------------------------------------------------------------------------------------------------------         
                                             
+=======
+
+
+
+>>>>>>> 449493f087473e8fe4bcd0694cb179457c87c04d
 -- | Handle user input
 input :: Event -> GameState -> IO GameState
 input e gstate = return (inputKey e gstate)
