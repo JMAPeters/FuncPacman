@@ -19,7 +19,7 @@ chooseView :: GameState -> Picture
 chooseView gs
           | isGameOver gs == True = Pictures ([drawGameOver gs])
           | isWon gs == True = Pictures ([drawWin gs, drawPauzed gs])
-          | otherwise = Pictures ([makeView gs, drawPacman (posx $ pacman gs) (posy $ pacman gs), drawScore gs, drawPauzed gs] ++ map (\ghost -> (drawGhost (gposx $ ghost) (gposy $ ghost))) (ghosts gs))
+          | otherwise = Pictures ([makeView gs, drawPacman (posx $ pacman gs) (posy $ pacman gs) (dir $ pacman gs), drawScore gs, drawPauzed gs] ++ map (\ghost -> (drawGhost (gposx $ ghost) (gposy $ ghost))) (ghosts gs))
 
 makeView :: GameState -> Picture
 makeView gstate = Pictures [drawGrid gstate x y | x <- [0 .. fromIntegral gridWidth - 1], y <- [0.. fromIntegral gridHeight - 1]]
@@ -48,8 +48,13 @@ makePac x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromInteg
 makeCandy :: Int -> Int -> Picture
 makeCandy x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color red $ circleSolid 8
 
-drawPacman :: Int -> Int -> Picture
-drawPacman x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ circleSolid 15
+drawPacman :: Int -> Int -> Char -> Picture
+drawPacman x y dir = case dir of
+                          'n' -> Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ arcSolid 110 359 15
+                          'o' -> Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ arcSolid 20 350 15
+                          'z' -> Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ arcSolid (0-370) (0-90) 15
+                          'w' -> Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ arcSolid 170 (0-100) 15
+                          'x' -> Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ circleSolid 15
 
 drawGhost :: Int -> Int -> Picture
 drawGhost x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color green $ circleSolid 10
