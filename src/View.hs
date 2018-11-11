@@ -43,21 +43,21 @@ makeSquare x y = Color customBlueColour $ Polygon [pointOne, pointTwo, pointTree
     pointFour = (fromIntegral x * fromIntegral screenBlok - (fromIntegral screenWidth / 2), fromIntegral y * fromIntegral screenBlok + fromIntegral screenBlok - (fromIntegral screenHeight / 2)) 
 
 makePac :: Int -> Int -> Picture
-makePac x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color customYellowColour $ circleSolid 5
-
+makePac x y = gridTranslate x y $ Color customYellowColour $ circleSolid 5
+9
 makeCandy :: Int -> Int -> Picture
-makeCandy x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color red $ circleSolid 8
+makeCandy x y = gridTranslate x y $ Color red $ circleSolid 8
 
 drawPacman :: Int -> Int -> Char -> Picture
 drawPacman x y dir = case dir of
-                          'n' -> Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ arcSolid 110 359 15
-                          'o' -> Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ arcSolid 20 350 15
-                          'z' -> Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ arcSolid (0-370) (0-90) 15
-                          'w' -> Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ arcSolid 170 (0-100) 15
-                          'x' -> Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color yellow $ circleSolid 15
+                          'n' -> gridTranslate x y $ Color yellow $ arcSolid 110 359 15
+                          'o' -> gridTranslate x y $ Color yellow $ arcSolid 20 350 15
+                          'z' -> gridTranslate x y $ Color yellow $ arcSolid (0-370) (0-90) 15
+                          'w' -> gridTranslate x y $ Color yellow $ arcSolid 170 (0-100) 15
+                          'x' -> gridTranslate x y $ Color yellow $ circleSolid 15
 
 drawGhost :: Int -> Int -> Picture
-drawGhost x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2)) $ Color green $ circleSolid 10
+drawGhost x y = gridTranslate x y $ Color green $ circleSolid 10
 
 drawScore :: GameState -> Picture
 drawScore gstate = Translate (5 - fromIntegral screenWidth / 2) (fromIntegral screenHeight / 2 - fromIntegral screenBlok + 5) $ Scale 0.2 0.2 $ Color white $ text ("Score: " ++ (show (score gstate)))
@@ -79,3 +79,6 @@ drawWin gstate = Translate (100 - fromIntegral screenWidth / 2) (50 - fromIntegr
 
 drawGameOver :: GameState -> Picture
 drawGameOver gstate = Translate (100 - fromIntegral screenWidth / 2) (50 - fromIntegral screenHeight / 2 - fromIntegral screenBlok + 5) $ Scale 0.5 0.5 $ Color white $ text ("GameOver")
+
+gridTranslate :: Int -> Int -> Picture -> Picture
+gridTranslate x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2))
