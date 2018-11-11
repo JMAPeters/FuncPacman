@@ -44,7 +44,7 @@ makeSquare x y = Color customBlueColour $ Polygon [pointOne, pointTwo, pointTree
 
 makePac :: Int -> Int -> Picture
 makePac x y = gridTranslate x y $ Color customYellowColour $ circleSolid 5
-9
+
 makeCandy :: Int -> Int -> Picture
 makeCandy x y = gridTranslate x y $ Color red $ circleSolid 8
 
@@ -53,7 +53,7 @@ drawPacman x y dir = case dir of
                           'n' -> gridTranslate x y $ Color yellow $ arcSolid 110 359 15
                           'o' -> gridTranslate x y $ Color yellow $ arcSolid 20 350 15
                           'z' -> gridTranslate x y $ Color yellow $ arcSolid (0-370) (0-90) 15
-                          'w' -> gridTranslate x y $ Color yellow $ arcSolid 170 (0-100) 15
+                          'w' -> gridTranslate x y $ Color yellow $ arcSolid 180 (0-100) 15
                           'x' -> gridTranslate x y $ Color yellow $ circleSolid 15
 
 drawGhost :: Int -> Int -> Picture
@@ -75,10 +75,10 @@ customTransparentColor :: Color
 customTransparentColor = makeColorI 0 0 0 0
 
 drawWin :: GameState -> Picture
-drawWin gstate = Translate (100 - fromIntegral screenWidth / 2) (50 - fromIntegral screenHeight / 2 - fromIntegral screenBlok + 5) $ Scale 0.5 0.5 $ Color white $ text ("You Won")
+drawWin gstate = Translate (100 - fromIntegral screenWidth / 5) (50 - fromIntegral screenHeight / 2 - fromIntegral screenBlok + 5) $ Scale 0.5 0.5 $ Color white $ text ("You Won")
 
 drawGameOver :: GameState -> Picture
-drawGameOver gstate = Translate (100 - fromIntegral screenWidth / 2) (50 - fromIntegral screenHeight / 2 - fromIntegral screenBlok + 5) $ Scale 0.5 0.5 $ Color white $ text ("GameOver")
+drawGameOver gstate = Translate (100 - fromIntegral screenWidth / 5) (50 - fromIntegral screenHeight / 5 - fromIntegral screenBlok + 5) $ Scale 0.5 0.5 $ Color white $ text ("GameOver")
 
 gridTranslate :: Int -> Int -> Picture -> Picture
 gridTranslate x y = Translate ((fromIntegral x * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenWidth / 2)) ((fromIntegral y * fromIntegral screenBlok) + (fromIntegral screenBlok / 2) - (fromIntegral screenHeight / 2))

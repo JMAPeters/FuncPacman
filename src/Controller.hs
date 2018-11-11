@@ -45,11 +45,11 @@ checkWon :: GameState -> Bool
 checkWon gstate
             | length (coinList gstate) == (amountOfPecs gstate) = True
             | otherwise = False
-----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 
 
----movement of ghosts----------------------------------------------------------------------------------------------------------------------------------
+---movement of ghosts-------------------------------------------------------------------------------
 moveGhosts :: Float -> GameState -> GameState
 moveGhosts secs gstate
                 | (elem True (map (\ghost -> checkColision gstate ghost) (ghosts gstate))) == True = gstate {isGameOver = True}
@@ -98,14 +98,14 @@ ghostToGo x y grid ghost = filter (\x -> x /= 'x') [(checkDir 'n'), (checkDir 'o
                                             'z' | checkPos (gposx ghost) ((gposy ghost) - 1) grid -> 'z'
                                             'w' | checkPos ((gposx ghost) - 1) (gposy ghost) grid -> 'w'
                                             _ -> 'x'
+----------------------------------------------------------------------------------------------------
 
 
 
 
 
 
-
-
+-- handling the input
 input :: Event -> GameState -> IO GameState
 input e gstate = return (inputKey e gstate)
 
@@ -122,12 +122,13 @@ inputKey (EventKey (Char c) state _ _) gstate
     _ -> gstate
 inputKey _ gstate = gstate
 
+-- check if a spot is not a wall
 checkPos :: Int -> Int -> Grid -> Bool
 checkPos x y grid = case grid ! (x, y) of
                     "w" -> False
                     _ -> True
 
--- voor het inladen van het level
+-- for loading the file
 getWords :: FilePath -> IO [String]
 getWords path = do contents <- readFile path
                    return (lines contents)                    
